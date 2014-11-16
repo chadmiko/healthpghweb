@@ -1,0 +1,20 @@
+
+<td>
+  <span>#<%= number %></span>
+</td>
+<td>
+  <input type="text" size="3" name="age" value="<%= age %>" placeholder="Age"/>
+</td>
+<td>
+  <select name="tobacco">
+    <option value="0" <%= !tobacco ? 'selected' : '' %> >No</option>
+    <option value="1" <%= tobacco ? 'selected' : '' %> >Yes</option>
+  </select>
+</td>
+<td>
+  <% if( number > 1 ) { %>
+    <button type="button" name="remove" class="remove-applicant">Remove</button>
+  <% } else { %>
+    &nbsp;
+  <% } %>
+</td>

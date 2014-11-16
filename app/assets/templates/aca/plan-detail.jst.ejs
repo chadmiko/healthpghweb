@@ -1,0 +1,174 @@
+
+
+  <div class="list-controls">
+    <button type="button" class="show-plans btn btn-default btn-sm"><span class="glyphicon glyphicon-chevron-left"></span> Back to Plans</button> 
+  </div>
+
+
+<div class="row">
+  <div class="sob col-sm-8 col-md-8">
+    <div class="box-shadow box-border"> 
+      <div class="sob-heading">
+        <div class="sob-issuer-info">
+          <h3 class="plan-marketing-name" style="margin:0"><%= marketing_name %></h3>
+          <div>
+            <span class="issuer-name"><%= issuer_name %></span> | <span class="network-type"><%= network_type %></strong></span>
+          </div>
+        </div>
+
+        <div class="row sob-pricing">
+          <div class="col-sm-4 col-md-5">
+            <div class="hide pricing-notice">
+              <span class="premium-value"> $<%= Utils.Number.formatFixed(net_premium, 2) %></span> per month estimate</span>
+              <p class="hide tobacco-notice"><small>This is a Non-tobacco rate; your final price may be higher.</small></p>
+            </div>
+            <div class="hide add-applicants-notice">
+              <button type="button" class="add-applicants btn btn-primary"><span class="glyphicon glyphicon-user"></span> Add Applicants to See Prices</button>
+            </div>
+          </div>
+          <div class="col-sm-8 col-md-7">
+             
+
+          </div>
+        </div>
+      </div>
+
+      <div class="sob-body">
+        <div class="catastrophic-notices hide alert alert-info">
+          <p class="hide catastrophic-subsidy-notice"><strong>Did you know?</strong>  You cannot use a subsidy to lower the cost of a Catastrophic plan.  You'll have to pay the full price.</p>
+          <p class="hide catastrophic-age-notice"><strong>Heads Up!</strong>  This Catastrophic plan is only available to applicants under age 30 or those with a "hardship exemption".</p>
+        </div>    
+          <p class="hide chip-notice"></p>
+
+        <table class="table">
+          <thead>
+            <th colspan="3">Plan Overview</th>
+          </thead>
+          <tr>
+            <td>
+              Metal Level
+            </td>
+            <td>
+              <span class="metal-level <%= metal_level_name %>"><%= metal_level_name %></span>
+            </td>
+          <tr>
+            <td>
+              <%= is_family ? 'Family' : 'Individual' %> Medical Deductible
+            </td>
+            <td>
+              <%= medical_deductible %> In-Network 
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <%= is_family ? 'Family' : 'Individual' %> Out-of-Pocket Maximum
+            </td>
+            <td>
+              <%= medical_max_oop %> In-Network 
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Network Type
+            </td>
+            <td>
+              <%= network_type %>
+            </td>
+          </tr>
+        </table>
+
+        <table class="table">
+          <thead>
+            <th colspan="3">Medical Costs</th>
+          </thead>
+          <tr>
+            <td>
+              Primary Doctor Office Visit
+            </td>
+            <td>
+              <%= pcp_copay %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Specialist Office Visit
+            </td>
+            <td>
+              <%= specialist_copay %>
+              <% if ( 'HMO' == network_type ) { %>
+                <br> (May require referral)
+              <% } %> 
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Emergency Room Visit
+            </td>
+            <td>
+              <%= er_copay %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Hospital Stay
+            </td>
+            <td>
+              <%= inpatient_facility %>
+            </td>
+          </tr>
+          <tfoot>
+            <td colspan="3">
+              Tip:  Avoid paying higher costs!  Search the <a href="<%= network_url %>" target="_blank">Provider Directory</a> to ensure your doctors are in-network.
+            </td>
+          </tfoot>
+        </table>
+
+     
+        <table class="table">
+          <thead>
+            <th colspan="3">Prescription Drug Costs</th>
+          </thead>
+          <tr>
+            <td>
+              Covered Generics
+            </td>
+            <td>
+              <%= generic_drugs %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Preferred Brand-Name Drugs
+            </td>
+            <td>
+              <%= pfd_brand_drugs %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Non-Preferred Brand Drugs
+            </td>
+            <td>
+              <%= non_pfd_brand_drugs %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Specialty Drugs
+            </td>
+            <td>
+              <%= specialty_drugs %>
+            </td>
+          </tr>
+       <!-- formulary urls not complete 
+          <tfoot>
+            <td colspan="3">Tip:  Search the <a href="<%= formulary_url %>" target="_blank">List of Covered Drugs</a> to see what your prescriptions will cost.</td> 
+          </tfoot>
+        -->
+        </table> 
+      </div>
+
+    </div>
+
+  </div>
+</div>

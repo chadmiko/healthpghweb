@@ -1,0 +1,21 @@
+
+<div>
+  <label>Household Size</label> 
+  <select id="household_size" name="household_size">
+    <% _.each(_.range(number_applicants, 9), function(i) { %>
+    <option value="<%= i %>" <%= household_size == i ? 'selected' : '' %> ><%= i %></option>
+    <% }); %>
+  </select>
+  <p>Tip: Count only those people who will be listed on your tax return (e.g. You, Your Spouse, any dependents).</p>
+</div>
+
+<div>
+  <label>Annual Household Income</label>
+  <input id="household_income" type="text" name="household_income" value="<%= household_income %>" placeholder="e.g. 40,000" />
+  <p>Tip: include gross income for everyone listed on your tax return.</p>
+</div>
+
+<hr>
+<div class="pull-right">
+  <a class="btn" href="#people" id="done-income">Done Updating Income</button>
+</div>

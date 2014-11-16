@@ -1,0 +1,13 @@
+<div id="finder">
+  <div id="app-view"></div>
+</div>
+<script type="text/javascript">
+  var county = {fips_code: '<%= params[:fips_code].to_s %>', full_name: 'Allegheny County'};
+  var acaPlans = new HealthPGH.Collections.AcaPlans([]);
+  acaPlans.reset( <%== @plans.to_json %> );
+
+  var router = new HealthPGH.Routers.AcaPlanSearch({
+    county: county,
+    plans: acaPlans
+  });
+</script>

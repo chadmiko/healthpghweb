@@ -1,0 +1,50 @@
+  <div class="row">
+    <div class="col-md-12"><h4>Metal Levels</h4></div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <label>
+        <input type="checkbox" name="metal_levels[]" value="platinum" <%= platinum ? 'checked' : '' %> />
+        Platinum
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <label>
+        <input type="checkbox" name="metal_levels[]" value="gold" <%= gold ? 'checked' : '' %> />
+        Gold
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <label>
+        <input type="checkbox" name="metal_levels[]" value="silver" <%= silver ? 'checked' : '' %> />
+        Silver
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <label>
+        <input type="checkbox" name="metal_levels[]" value="bronze" <%= bronze ? 'checked' : '' %> />
+        Bronze
+      </label>
+    </div>
+  </div>
+
+  <% if (show_catastrophic) { %>
+  <div class="row">
+    <div class="col-md-12">
+      <label>
+        <input type="checkbox" name="metal_levels[]" value="catastrophic" <%= catastrophic ? 'checked' : '' %> />
+        Catastrophic
+      </label>
+    </div>
+  </div>
+  <% } %>

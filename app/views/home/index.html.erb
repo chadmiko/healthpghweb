@@ -1,0 +1,50 @@
+
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
+
+      <div class="promo">
+        <%= image_tag('logo-196x50.png', height: '50', width: '196', border: '0') %>
+        <hr>
+
+        <h3>The Health Insurance Shopping Site for Western Pennsylvania.</h3>
+      
+        <div class="row">
+          <div class="col-sm-offset-2 col-sm-8 col-md-offset-2 col-md-8"> 
+            <form role="form" action="<%= aca_plans_url %>" method="get" id="home-form"> 
+            
+              <div class="form-group">
+                <label for="county">Where do You Live?</label> 
+                <select class="form-control" id="county" name="county"><option value="42003">Allegheny County</option>
+<option value="42005">Armstrong County</option>
+<option value="42007">Beaver County</option>
+<option value="42019">Butler County</option>
+<option value="42051">Fayette County</option>
+<option value="42059">Greene County</option>
+<option value="42063">Indiana County</option>
+<option value="42073">Lawrence County</option>
+<option value="42125">Washington County</option>
+<option value="42129">Westmoreland County</option></select> 
+              </div>
+
+              <div style="">
+                <button class="btn-primary btn-block btn-lg" type="submit">Find Plans N'At</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+      <div class="text-center"  style="font-size: 16px; color: #777">
+        <p>Currently serving <%= render 'shared/service_area_text' %></p>
+      </div>
+
+
+    </div>
+
+  </div>

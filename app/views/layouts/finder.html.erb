@@ -1,0 +1,22 @@
+<%= render 'shared/head' %>
+<body class="finder">
+  <div class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/"><%= image_tag("logo-141x36.png", height: '36', width: '141', border: '0') %></a>
+        <div class="help visible-xs text-right"> <a href="<%= static_path('help') %>" class="btn btn-default"><strong>Help</strong></a></div>
+      </div>
+
+      <div class="collapse navbar-collapse navbar-right">
+        <div class="help">Need Help? Call <a href="tel:<%= SiteSetting.customer_service_phone %>"><%= number_to_phone( SiteSetting.customer_service_phone, area_code: true ) %></a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <%= yield %>
+  </div>
+
+  <%= render 'shared/footer' %>
+</body>
+</html>

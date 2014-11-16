@@ -1,0 +1,358 @@
+$brand-blue: #114566;
+$brand-blue-darker: #04324f;
+$brand-blue-darkest: #022034;
+$brand-blue-lighter: #20587d;
+$brand-blue-lightest: #3a6c8d;
+
+@import "bootstrap-sprockets";
+//$link-color: #20587d;
+@import "bootstrap";
+
+/* mixins */
+@mixin btn-round-none {
+  border-radius:                    0px;
+  -webkit-border-radius:            0px;
+  -moz-border-radius:               0px;
+}
+.btn, .btn-lg, .btn-sm, .btn-xs {
+  @include btn-round-none
+}
+.btn-primary {
+  @include button-variant(#fff, #20587d, #022034);
+}
+
+
+
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall 
+body {
+  padding-top: 50px;
+}
+*/
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+  /*border: 0; */
+}
+
+/*
+ * Sidebar
+ */
+
+.navbar-brand {
+  padding: 10px 20px 0 10px;
+}
+
+.navbar {
+  .help {
+    font-weight: bold;
+    line-height: 50px;
+    padding: 0 15px 0 0;
+    color: $brand-blue;
+    a {
+    }
+  }
+}
+
+
+.box-border {
+  border: 1px solid #eee;
+}
+.box-shadow {
+  box-shadow: 1px 1px 2px #ccc;
+}
+
+body.finder {
+  padding-top: 60px;
+}
+
+/* aca plans */
+.aca-plan {
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid #eee;
+  box-shadow: 1px 1px 2px #ccc;
+
+  h3 {
+    margin: 0 0 8px 0;
+    font-weight: normal;
+  }
+
+  .issuer-name {
+    font-size: 16px;
+  }
+
+  .aca-pricing-summary {
+    text-align: center;
+    font-size: 22px;
+    color: $brand-blue;  
+    line-height: 1;
+
+    .net-premium-text, .premium-frequency-text {
+      display: block;
+    }
+  }
+}
+
+.promo {
+  @extend .text-center;
+  padding: 20px 0;
+
+  h3 {
+    font-size: 40px;
+    padding: 0;
+    color: #513C00;
+    margin-bottom: 80px;
+  }
+
+  form {
+    label {
+      color: $brand-blue;
+      font-size: 22px; 
+    }
+    select {
+      height: 40px;
+      font-size: 22px;
+    }
+  }
+}
+
+#home-form {
+  margin: 0 auto;
+}
+
+.net-premium-text {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.premium-frequency-text {
+  font-size: 14px;
+}
+
+.btn {
+  .glyphicon {
+    margin-right: 8px;
+  }
+}
+
+.label-lt {
+  font-weight: normal;
+}
+
+.metal-level {
+  //background-color: $brand-info;
+  //border: 1px solid darken($brand-info, 10%);
+  color: #414833;
+  font-weight: bold;
+}
+h3 {
+  .metal-level {
+    font-size: 14px;
+    vertical-align: top;
+    line-height: 28px;
+  }
+}
+
+.metal-level.Bronze {
+  color: #A67D3D;
+  //border-color: darken(#A67D3D, 15%);
+}
+.metal-level.Gold {
+  color: darken(#FFD700, 8%);
+  //border-color: darken(#FFD700, 20%);
+  //text-shadow: 1px 1px #aaa;
+}
+.metal-level.Silver {
+  color: darken(#C0C0C0, 13%);
+  //border-color: darken(#c0c0c0, 20%);
+  //text-shadow: 1px 0px #222;
+}
+.metal-level.Platinum {
+  background-color: darken(#E5E4E2, 5%);
+  color: #fff;
+  padding: 0 2px;
+  //border-color: darken(#E5E4E2, 20%);
+  text-shadow: 1px 1px #999;
+}
+
+.metal-level-filters {
+  label {
+    display:block;
+    width: 100%;
+    padding: 2px 0;
+    @extend .label-lt;
+  }
+}
+
+.benefit-key {
+  margin-right: 10px; 
+  color: #777;
+  width: 150px;
+  float:left;
+  display: block;
+}
+.benefit-value {
+  float: left;
+}
+
+.sob {
+
+  .sob-heading {
+    .sob-issuer-info {
+    } 
+    .plan-marketing-name {
+      color: $brand-blue-lightest;
+    }
+
+    .issuer-name {
+      color: #333;
+    }
+    border-bottom: 1px solid #eee;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .sob-pricing {
+    padding: 20px 0 0;
+    .pricing-notice {
+      padding: 8px;
+      background: #ffd; 
+      line-height: 1;
+      border-radius: 4px;
+      -webkit-border-radius: 4px;
+    } 
+
+    .add-applicants-notice {
+    }
+
+    .premium-value {
+      color: $brand-blue;
+      font-size: 22px;
+      font-weight: bold;
+    }
+  }
+
+  .sob-body {
+    padding: 0 20px 10px;
+  }
+
+  .tobacco-notice {
+    color: #777;
+  }
+
+  .issuer-name {
+    font-size: 18px;
+    margin-right: 10px;
+  }
+
+  table {
+    th {
+      color: $brand-blue;
+    }
+
+    td:nth-child(1) {
+      width: 33%;
+      color: #777;
+    }    
+    
+    tfoot {
+      font-size: 12px;
+      color: #777;
+    }
+  }
+}
+
+.edit-applicants {
+  color: $brand-blue;
+}
+
+.list-controls {
+  @extend .clearfix;
+
+  padding: 10px 0;
+  .btn {
+    margin-right: 5px;
+  }
+  .btn, .dropdown {
+    float: left; 
+  }
+  .dropdown {
+    .btn {
+      float: none;
+    }
+    .btn.edit-application {
+    }
+  }
+}
+
+#list-controls-view {
+  @extend .list-controls;
+}
+
+
+.footer {
+  margin-top: 40px;
+  background-color: #f8f8f8;
+  border-color: #f7f7f7;
+  padding: 40px 40px 20px;
+  .mumbo {
+    color: #999;
+    font-size: 10px;
+    padding: 20px 0 0;
+  }
+  .disclaimer {
+    font-size: 11px;
+    color: #777;
+  }
+}
+
+@media(max-width: 767px) {
+  .list-controls {
+    .btn {
+      margin-bottom: 8px; 
+      @extend .btn-block;
+    }
+  }
+
+  .footer {
+    a {
+      color: $brand-blue-lightest;
+    }
+    padding: 20px 0;
+    .disclaimer {
+      padding: 20px 0 0;
+    }
+  }
+
+  .aca-plan {
+    .aca-pricing-summary {
+      background: #eee;
+    }
+  }
+
+ .aca-pricing-summary {
+    padding: 10px 0;
+  }
+
+  .block-xs {
+    width: 100%;
+  }
+}
+
+
