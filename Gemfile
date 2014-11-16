@@ -20,6 +20,10 @@ gem 'jquery-ui-rails'
 gem 'ejs', group: :assets
 
 gem 'active_model_serializers'
+gem 'rails_12factor', group: :production
+
+gem 'unicorn'
+gem 'foreman'
 
 group :development, :test do
   gem 'factory_girl_rails', require: false
