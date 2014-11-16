@@ -52,7 +52,6 @@ HealthPGH.Views.AcaEditApplicantsView = Backbone.View.extend({
     } 
 
     var adults = this.model.getApplicantsOverAge(26);
-    console.log(adults);
     if (adults && adults.length > 2) {
       this.$el.find('.max-adults-notice').removeClass('hide');
     } else {

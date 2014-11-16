@@ -19,7 +19,6 @@ HealthPGH.Models.AcaPricingEngine = Backbone.Model.extend({
       hh_size = this.household.get('household_size'),
       fpl_ratio = HealthPGH.Models.AcaPricingEngine.calculateIncomeToFPL( hh_income, hh_size, plan_year );
 
-      console.log( "FPLRATIO", fpl_ratio);
       // Calc HH total non-tobacco premium 
 
       //TODO

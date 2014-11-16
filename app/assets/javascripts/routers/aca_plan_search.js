@@ -88,7 +88,7 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
     if (view) { parts.push( "v:" + view.toString()); }
 
     var route = parts.join("/");
-    console.log( "UPDATING", route);
+    //console.log( "UPDATING", route);
     this.navigate( route );
   },
 

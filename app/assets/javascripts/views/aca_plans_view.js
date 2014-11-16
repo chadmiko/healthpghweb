@@ -82,7 +82,6 @@ HealthPGH.Views.AcaPlansView = Backbone.View.extend({
 
     return function (a, b) {
       var x = key(a), y = key(b);
-      console.log(x, y);
 
       return ( x < y ? -1 : (x > y ? 1 : 0)) * [1,-1][+!!reverse];
     } 
