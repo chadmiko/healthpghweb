@@ -1,5 +1,5 @@
 worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
-timeout 20
+timeout 15
 preload_app true
 listen ENV['PORT']
 
@@ -11,6 +11,9 @@ before_fork do |server, worker|
 
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.connection.disconnect!
+
+  # Throttle for forking too quickly
+  sleep 1
 end
 
 after_fork do |server, worker|
