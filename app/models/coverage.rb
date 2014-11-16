@@ -6,7 +6,7 @@ class Coverage
 
   def self.find_plans_by_county(fips, year)
     cty = County.where(fips_code: fips).first
-    cty.health_plans.where(plan_year: year).to_a
+    cty.health_plans.where(plan_year: year).includes(:cost_sharing_levels).to_a
   end
 
   def self.next_effective_date(tz='Eastern Time (US & Canada)')
