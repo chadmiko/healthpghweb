@@ -2,7 +2,7 @@
 # About: create the plans, setup plan counties of service, then load rates by rating area
 
 # 1) Create the plans
-PLANS_FILE='/Users/chadmiko/Documents/Projects/rails/healthpghweb/files/PA-QHP_Individual_2015.csv'
+PLANS_FILE=File.join(Rails.root, 'files/PA-QHP_Individual_2015.csv')
 qhp_parser = QHPParser.new( PLANS_FILE )
 criteria = { 'State' => 'PA' }
 ct = 0
@@ -46,7 +46,7 @@ matches.each do |row|
 end
 
 # 2) Setup plan counties
-SERVICE_AREA_FILE='/Users/chadmiko/Documents/Projects/rails/healthpghweb/files/PA-Service_Area_2015.csv'
+SERVICE_AREA_FILE= File.join(Rails.root, 'files/PA-Service_Area_2015.csv')
 
 qhp_parser = QHPParser.new( SERVICE_AREA_FILE )
 HealthPlan.where(plan_year: YEAR).find_each do |plan|

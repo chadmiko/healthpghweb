@@ -2,12 +2,11 @@ require 'csv'
 
 class CountyParser
 
-  attr_reader :file, :path
+  attr_reader :path
 
-  def initialize(path)
+  def initialize( path )
     raise ArgumentError.new if (path.nil? || !File.exists?(path) || !File.readable?(path))
     @path = path
-    #@file = File.new(path)
   end
 
   # 

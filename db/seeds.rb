@@ -3,7 +3,7 @@ require 'qhp_parser'
 require 'network_type'
 require 'metal_level'
 
-COUNTY_FILE='/Users/chadmiko/Documents/Projects/rails/healthpghweb/files/counties.csv'
+COUNTY_FILE= File.join(Rails.root, 'files/counties.csv')
 YEAR=2015
 
 def error(msg, to_inspect = [])

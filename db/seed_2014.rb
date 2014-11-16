@@ -1,4 +1,4 @@
-PLANS_FILE='/Users/chadmiko/Documents/Projects/rails/healthpghweb/files/PA-QHP_Individual_2014.csv'
+PLANS_FILE= File.join(Rails.root, 'files/PA-QHP_Individual_2014.csv')
 
 qhp_parser = QHPParser.new( PLANS_FILE )
 criteria = { 'State' => 'PA' }
