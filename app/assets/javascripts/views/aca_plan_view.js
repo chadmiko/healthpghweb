@@ -7,12 +7,27 @@ HealthPGH.Views.AcaPlanView = Backbone.View.extend({
   className: 'aca-plan',
 
   events: {
+    "change .ui-btn": "onCompareChange"
   },
 
   initialize: function(o) {
-    this.household = o.household, this.model = o.model;
+    this.params = o.params,
+    this.household = o.household, 
+    this.model = o.model;
+    //this.listenTo( this.model, "change:saved", this.updateDisplay);
   },
 
+  leave: function() {
+    this.stopListening();
+    this.remove();
+  },
+
+  onCompareChange: function() {
+    var s = this.$el.find("input[type='checkbox']").get(0).checked;
+    this.model.toggleSaved( s );
+    this.params.toggleComparisonPlan( this.model.get('id'), this.model.isSaved());
+  },
+ 
   getAttributesForView: function() {
     var a = this.model.attributes,
       benefits = this.model.getCurrentCostSharing(),

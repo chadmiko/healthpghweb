@@ -5,18 +5,19 @@
 
     <% } else { %>
       <div class="dropdown">
-        <button type="button" class="btn btn-primary dropdown" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <%= applicants_button_text %> <span class="caret"></span></button>
+        <button type="button" class="btn btn-primary dropdown" data-toggle="dropdown">
+          <span class="glyphicon glyphicon-user"></span> <span class="visible-xs-inline badge"><%= applicants_count %></span> <span class="hidden-xs"><%= applicants_button_text %></span> <span class="caret"></span></button>
         <div class="dropdown-menu row" role="menu">
             <ol id="applicants-summary-list"></ol>
-            <div style="padding: 0 10px"><button type="button" class="edit-application btn btn-warning btn-sm btn-block">Edit Applicants</button></div>
+            <div style="padding: 0 10px"><button type="button" class="edit-application btn btn-warning btn-block">Edit Applicants</button></div>
         </div>
       </div>
 
-      <div class="hidden-xs pull-right" style="color: #777; line-height: 30px;">Coming Soon: Calculate Your Subsidy</div>
+
       <!-- 
       <button type="button" class="btn btn-primary" id="edit_subsidy"><span class="glyphicon glyphicon-certificate"></span><%= subsidy_button_text %></button>
       -->
     <% } %>
 
-    <button id="#refine" class="visible-xs btn btn-primary"><span class="glyphicon glyphicon-filter"></span>Filter</button>
+    <button id="refine" class="visible-xs btn btn-primary"><span class="glyphicon glyphicon-filter"></span>Filter</button>
 

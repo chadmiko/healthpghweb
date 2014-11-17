@@ -18,34 +18,44 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
     this.county = o.county;
     this.vent = o.vent;
 
-    this.listenTo(this.household.applicants, "add", this.render);
-    this.listenTo(this.household.applicants, "remove", this.render);
-    this.listenTo(this.household.applicants, "reset", this.render);
+    //this.listenTo(this.household.applicants, "add", this.render);
+    //this.listenTo(this.household.applicants, "remove", this.render);
+    //this.listenTo(this.household.applicants, "reset", this.render);
+    this.listenTo(this.params, "change:compare_ids", this.onComparisonChange);
   },
 
   leave: function() {
     this._removeViews();
-    this.stopListening();
     this.remove();
   },
 
   onPlanClick: function(ev) {
     ev.preventDefault();
     var plan_id = $(ev.target).data('id');
-    this.params.setView(null);
     this.params.setSelectedPlanId( plan_id );
+    Backbone.history.navigate("plan/" + plan_id);
     this.vent.trigger("show:plan");
   },
 
   onShowApplication: function(ev) {
-    this.params.setView('application');
+    Backbone.history.navigate( RB.editApplicationPath(this.household, this.params) );
     this.vent.trigger("show:application");
   },
 
   onRefine: function(ev) {
     this.params.setSelectedPlanId(null);
-    this.params.setView('filters');
+    this.params.resetComparisonPlanIds();
+    Backbone.history.navigate( RB.filterPlansPath( this.household, this.params ));
     this.vent.trigger("show:filters");
+  },
+
+  onComparisonChange: function() {
+    this.updateComparisonDisplay();
+    Backbone.history.navigate( RB.listPlansPath( this.household, this.params ));
+  },
+
+  updateRoute: function() {
+
   },
 
   render: function() {
@@ -57,17 +67,41 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
       alerts: {
         skipped_medicare_eligibles: !1,
         skipped_chip_eligibles: !1 
+      },
+    });
+
+    this.$el.html(h);
+    this.$el.find('.affix-list-controls').affix({
+      offset: { 
+        top: $('.navbar-default').height()
       }
     });
-    this.$el.html(h);
 
     if( !this.plans.isEmpty() ) {
       this._renderListControls();
     }
     this._renderPlans();
     this._renderMetalLevelFilters();
+    this.updateComparisonDisplay();
  
     return this;
+  },
+
+  updateComparisonDisplay: function() {
+    var j = this.params.getComparisonPlanIds().length;
+
+    if (!this.$compareBtn) {
+      this.$compareBtn = this.$el.find('#compare_plans');
+      this.$compareBadge = this.$compareBtn.find('.badge');
+    }
+    this.$compareBadge.text( j );
+    
+    if (j > 0) {
+      this.$compareBtn.removeClass('hide');
+    } else {
+      this.$compareBtn.addClass('hide');
+    }
+
   },
 
   _getPlansElement: function() {
@@ -127,16 +161,5 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
       v.remove();
     });
   },
-
-  swap: function(newView) {
-
-    if (this.currentView && this.currentView.leave) {
-      this.currentView.leave();
-    }
-
-    this.currentView = newView;
-    this.currentView.render();
-    $(this.el).empty().append(this.currentView.el);
-  }
-
+ 
 });

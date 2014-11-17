@@ -3,7 +3,8 @@ HealthPGH.Models.AcaSearchParams = Backbone.Model.extend({
   defaults: {
     metal_levels: ['platinum','gold','silver','bronze','catastrophic'],
     selected_plan_id: null,
-    view: null
+    compare_ids: [],
+    view: null  //list, application, filters, compare
   },
 
   //helps w/routing
@@ -21,12 +22,45 @@ HealthPGH.Models.AcaSearchParams = Backbone.Model.extend({
   },
 
   setView: function(v) {
+    this.unset('view', {silent: !0});
     this.set({view: v});
+    //this.trigger("change:view");
+  },
+
+  getComparisonPlanIds: function() {
+    return this.get('compare_ids');
+  },
+
+  resetComparisonPlanIds: function() {
+    this.set({compare_ids: []});
+  },
+
+  hasPlansToCompare: function() {
+    var a = this.get('compare_ids');
+    return _.isEmpty(a) ? !1 : (a.length > 0);
+  },
+
+  toggleComparisonPlan: function(id, selected) {
+    var p = this.get('compare_ids'),
+      i = parseInt(id);
+
+    if (selected ) {
+      p.push( i );
+    } else {
+      p = _.without(p, i);
+    }
+
+    this.unset('compare_ids', {silent: !0});
+    this.set({compare_ids: _.uniq(p)});
   },
 
   // helps with routing
   getMetalLevelOptions: function() {
     return this.get('metal_levels').join(",");
+  },
+
+  getMetalLevelsArray: function() {
+    return this.get('metal_levels');
   },
 
   hasMetalLevel: function(str) {

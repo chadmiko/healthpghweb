@@ -12,6 +12,8 @@ HealthPGH.Models.AcaHousehold = Backbone.Model.extend({
     this.applicants = o.applicants;
     this.params = o.params;
     this.listenTo( this.applicants, "change", this.onApplicantChange );
+    this.listenTo( this.applicants, "reset", this.onApplicantChange );
+
   },
 
   onApplicantChange: function() {
@@ -28,9 +30,9 @@ HealthPGH.Models.AcaHousehold = Backbone.Model.extend({
     }
 
     if (this.isEligibleForCatastrophicCoverage()) {
-      this.params.toggleMetalLevel('Catastrophic', true);
+      this.params.toggleMetalLevel('catastrophic', !0);
     } else {
-      this.params.toggleMetalLevel('Catastrophic', false);
+      this.params.toggleMetalLevel('catastrophic', !1);
     }
   },
 

@@ -10,7 +10,16 @@ HealthPGH.Models.AcaPlan = Backbone.Model.extend({
     cost_sharing: [],
     cost_sharing_level: 0,
     network_url: null,
-    formulary_url: null
+    formulary_url: null,
+    saved: !1
+  },
+
+  toggleSaved: function(saved) {
+    this.set({saved: (saved == !0)});
+  },
+
+  isSaved: function() {
+    return this.get('saved') == !0;
   },
 
   getBaseRate: function() {

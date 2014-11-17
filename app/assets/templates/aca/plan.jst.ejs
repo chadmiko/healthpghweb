@@ -10,8 +10,8 @@
           <%= issuer_name %> 
         </div>
         
-        <span class="metal-level <%= metal_level_name %>"><%= metal_level_name %></span>
-
+        <div> <span class="metal-level <%= metal_level_name %>"><%= metal_level_name %></span></div>
+  
       </div>
 
       <div class="col-md-7 col-sm-7">
@@ -28,16 +28,25 @@
     </div>
   </div>
   <div class="col-sm-2 col-md-2">
-    <% if ( gross_premium ) { %>
-      <div class="aca-pricing-summary">
-        <span class="net-premium-text"> $<%= Utils.Number.formatFixed(net_premium, 2) %> </span> 
-        <span class="premium-frequency-text"> per month estimate</span>
-        <% if (subsidy && subsidy > 0) { %>
-        <span style="color: #777">was $<%= Utils.Number.formatFixed(gross_premium, 2) %> </span>
-        <% } %>
+    <div class="row">
+      <div class="col-xs-6 col-sm-12 col-md-12">
+          <% if ( gross_premium ) { %>
+            <div class="aca-pricing-summary">
+              <span class="net-premium-text"> $<%= Utils.Number.rounded(net_premium) %> </span> 
+              <span class="premium-frequency-text"> per month estimate</span>
+              <% if (subsidy && subsidy > 0) { %>
+              <span style="color: #777">was $<%= Utils.Number.rounded(gross_premium) %> </span>
+              <% } %>
+            </div>
+          <% } %>
       </div>
-
-
-    <% } %>
+      <div class="col-xs-6 col-sm-12 col-md-12">
+        <div class="ui-btn <%= saved ? 'checked' : '' %>">
+          <label class="btn btn-default">
+            <input type="checkbox" autocomplete="off" <%= saved ? 'checked' : '' %> /> Compare
+          </label>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

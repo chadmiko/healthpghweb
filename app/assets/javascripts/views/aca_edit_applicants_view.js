@@ -14,12 +14,16 @@ HealthPGH.Views.AcaEditApplicantsView = Backbone.View.extend({
     this._views = [],
       this.model = o.model,
       this.vent = o.vent,
-      this.params = o.params;
+      this.params = o.params,
+      ctx = this;
 
-    this.listenTo(this.model.applicants, 'add', this._addItem);
-    this.listenTo(this.model.applicants, 'remove', this._removeItem);
-    this.listenTo( this.model.applicants, "reset", this.render );
-    this.listenTo( this.model.applicants, "change", this._updateView);
+    this.listenTo(this.model.applicants, 'add', this.addItem);
+    this.listenTo(this.model.applicants, 'remove', this.removeItem);
+    this.listenTo( this.model.applicants, "change", this.updateView);
+
+    this.listenTo(this.model.applicants, 'add', this.updateRoute);
+    this.listenTo(this.model.applicants, 'remove', this.updateRoute);
+    this.listenTo(this.model.applicants, 'change', this.updateRoute);
   },
  
   leave: function() {
@@ -28,17 +32,29 @@ HealthPGH.Views.AcaEditApplicantsView = Backbone.View.extend({
   },
 
   onApplicationComplete: function() {
-    this.params.setView(null);
-    this.vent.trigger("show:list_or_plan");
+    var id = this.params.getSelectedPlanId();
+
+    if (id) { 
+      Backbone.history.navigate( RB.planPath( this.model.applicants ));
+      //this.vent.trigger("show:plan");
+    } else {
+      console.log( RB.listPlansPath( this.model, this.params ));
+      Backbone.history.navigate( RB.listPlansPath( this.model, this.params ));
+      this.vent.trigger("show:list");
+    }
   },
 
   onAddApplicant: function() {
     var age = this.model.applicants.length > 1 ? '19' : '40';
     this.model.applicants.add({age: age, tobacco: !1, collection: this.model.applicants});
-    this._updateView();
+    this.updateView();
+  },
+    
+  updateRoute: function() {
+    Backbone.history.navigate( RB.editApplicationPath( this.model ));
   },
 
-  _updateView: function() {
+  updateView: function() {
     if (this.model.isEmpty()) {
       this.$el.find('#application_complete').addClass('hide');
     } else {
@@ -84,17 +100,17 @@ HealthPGH.Views.AcaEditApplicantsView = Backbone.View.extend({
     this._removeViews();
     this._resetTemplate();
     this._renderCollection();
-    this._updateView();
+    this.updateView();
     return this;
   },
 
-  _addItem: function(model) {
+  addItem: function(model) {
     var l = this.$el.find('tbody');
     var $div = $("<tr/>").appendTo( l );
 
     // set model number 
     var n = this.model.applicants.indexOf(model) + 1;
-    model.set('number', n);
+    model.set({number:  n}, {silent: !0});
 
     var stub = new HealthPGH.Views.AcaApplicantView({
       el: $div,
@@ -105,10 +121,10 @@ HealthPGH.Views.AcaEditApplicantsView = Backbone.View.extend({
     this._views.push( stub );
     stub.render();
     this.$thead.removeClass('hide');
-    this._updateView();
+    this.updateView();
   },
 
-  _removeItem: function(target) {
+  removeItem: function(target) {
     var found = _.find(this._views, function(v) {
       return v.model == target;
     });
@@ -136,7 +152,7 @@ HealthPGH.Views.AcaEditApplicantsView = Backbone.View.extend({
   _renderCollection: function() {
     var ctx = this;
     this.model.applicants.each(function(m) {
-      ctx._addItem(m);
+      ctx.addItem(m);
     });
   },
 
