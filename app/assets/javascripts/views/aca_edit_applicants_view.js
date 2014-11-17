@@ -35,8 +35,8 @@ HealthPGH.Views.AcaEditApplicantsView = Backbone.View.extend({
     var id = this.params.getSelectedPlanId();
 
     if (id) { 
-      Backbone.history.navigate( RB.planPath( this.model.applicants ));
-      //this.vent.trigger("show:plan");
+      Backbone.history.navigate( RB.planPath( this.model.applicants, this.params ));
+      this.vent.trigger("show:plan");
     } else {
       console.log( RB.listPlansPath( this.model, this.params ));
       Backbone.history.navigate( RB.listPlansPath( this.model, this.params ));

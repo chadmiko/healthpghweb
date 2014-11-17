@@ -10,7 +10,7 @@ HealthPGH.Views.AcaPlansView = Backbone.View.extend({
       this.collection = o.collection,
       this.params = o.params;
 
-    //this.listenTo(this.params, "change", this.render);
+    this.listenTo(this.params, "change:metal_levels", this.render);
   },
 
   leave: function() {

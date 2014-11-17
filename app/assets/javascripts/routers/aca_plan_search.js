@@ -36,13 +36,14 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
 
     //this._stopListening();
 
-    var m = this._parseMetalLevels( metal_levels );
+    var m = this._parseMetalLevels( metal_levels ),
+      cids = this._parseCompareIds();
 
     //TODO ensure plans to compare are set to saved! 
     this.search_params.set({
       metal_levels:  m,
       selected_plan_id: plan_id ? plan_id.slice(1) : null,
-      compare_ids: compare_ids ? _.uniq(compare_ids.slice(1).split(",")) : []
+      compare_ids: cids
     }, {silent: !0});
 
     this.household.applicants.reset( this._parseApplicants( ages ));
@@ -94,6 +95,10 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
     } 
 
     return m;
+  },
+
+  _parseCompareIds: function(ids) {
+    return ids ? _.uniq(compare_ids.slice(1).split(",")) : []
   },
 
   onShowApplication: function() {

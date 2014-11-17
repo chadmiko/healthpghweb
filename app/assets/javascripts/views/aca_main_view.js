@@ -21,6 +21,7 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
     //this.listenTo(this.household.applicants, "add", this.render);
     //this.listenTo(this.household.applicants, "remove", this.render);
     //this.listenTo(this.household.applicants, "reset", this.render);
+    this.listenTo(this.params, "change:metal_levels", this.onMetalLevelChange);
     this.listenTo(this.params, "change:compare_ids", this.onComparisonChange);
   },
 
@@ -54,7 +55,7 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
     Backbone.history.navigate( RB.listPlansPath( this.household, this.params ));
   },
 
-  updateRoute: function() {
+  onMetalLevelChange: function() {
 
   },
 
