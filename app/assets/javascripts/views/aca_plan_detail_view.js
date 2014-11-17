@@ -25,14 +25,14 @@ HealthPGH.Views.AcaPlanDetailView = Backbone.View.extend({
 
   onAddApplicants: function() {
     //this.params.setSelectedPlanId(null);
-    this.params.setView('application');
-    //this.vent.trigger("show:application");
+    Backbone.history.navigate( RB.editApplicationPath( this.household, this.params));
+    this.vent.trigger("show:application");
   },
 
   onShowList: function() {
     this.params.setSelectedPlanId(null);
-    this.params.setView('list');
-    //this.vent.trigger("show:list");
+    Backbone.history.navigate( RB.listPlansPath( this.household, this.params));
+    this.vent.trigger("show:list");
   },
 
   getAttributes: function() {
