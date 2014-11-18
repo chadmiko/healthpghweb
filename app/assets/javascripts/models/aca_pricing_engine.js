@@ -5,10 +5,6 @@ HealthPGH.Models.AcaPricingEngine = Backbone.Model.extend({
     this.household = o.household;
     this.plans = o.plans;
 
-    this.listenTo( this.household.applicants, "change", this.run );
-    this.listenTo( this.household.applicants, "add", this.run );
-    this.listenTo( this.household.applicants, "remove", this.run );
-    this.listenTo( this.household.applicants, "reset", this.run );
     this.listenTo( this.vent, "pricing:reset", this.run );
   },
 

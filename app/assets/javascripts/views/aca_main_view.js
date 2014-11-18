@@ -6,7 +6,8 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
     "click #new_application": "onShowApplication",
     "click button.edit-application": "onShowApplication",
     "click #refine": "onRefine",
-    "click .plan": "onPlanClick"
+    "click .plan": "onPlanClick",
+    "click #compare": "onShowComparison"
   },
 
 
@@ -18,11 +19,8 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
     this.county = o.county;
     this.vent = o.vent;
 
-    //this.listenTo(this.household.applicants, "add", this.render);
-    //this.listenTo(this.household.applicants, "remove", this.render);
-    //this.listenTo(this.household.applicants, "reset", this.render);
-    this.listenTo(this.params, "change:metal_levels", this.onMetalLevelChange);
-    this.listenTo(this.params, "change:compare_ids", this.onComparisonChange);
+    this.listenTo(this.vent, "ui:metal_level_filter_change", this.onMetalLevelChange);
+    this.listenTo(this.vent, "ui:plan_saved", this.onComparisonChange);
   },
 
   leave: function() {
@@ -34,29 +32,41 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
     ev.preventDefault();
     var plan_id = $(ev.target).data('id');
     this.params.setSelectedPlanId( plan_id );
+
+    //console.log("onPlanClick MainView");
     Backbone.history.navigate("plan/" + plan_id);
     this.vent.trigger("show:plan");
   },
 
   onShowApplication: function(ev) {
-    Backbone.history.navigate( RB.editApplicationPath(this.household, this.params) );
+    //console.log("onShowApplication MainView");
+    Backbone.history.navigate( RB.editApplicationPath(this.household ));
     this.vent.trigger("show:application");
   },
 
   onRefine: function(ev) {
     this.params.setSelectedPlanId(null);
-    this.params.resetComparisonPlanIds();
+    //this.params.resetComparisonPlanIds();
+    //console.log("onRefine MainView");
     Backbone.history.navigate( RB.filterPlansPath( this.household, this.params ));
     this.vent.trigger("show:filters");
   },
 
-  onComparisonChange: function() {
+  onShowComparison: function() {
+    console.log("onShowComparison MainView");
+    Backbone.history.navigate( RB.comparePlansPath( this.household, this.params ));
+    this.vent.trigger("show:comparison");   
+  },
+
+  onComparisonChange: function(plan) {
+    this.params.toggleComparisonPlan( plan.get('id'), plan.isSaved());
     this.updateComparisonDisplay();
     Backbone.history.navigate( RB.listPlansPath( this.household, this.params ));
   },
 
   onMetalLevelChange: function() {
-
+    //console.log("onMetalLevelChange MainView");
+    Backbone.history.navigate( RB.listPlansPath( this.household, this.params ));
   },
 
   render: function() {
@@ -92,7 +102,7 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
     var j = this.params.getComparisonPlanIds().length;
 
     if (!this.$compareBtn) {
-      this.$compareBtn = this.$el.find('#compare_plans');
+      this.$compareBtn = this.$el.find('#compare');
       this.$compareBadge = this.$compareBtn.find('.badge');
     }
     this.$compareBadge.text( j );
@@ -140,7 +150,8 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
     var view = new HealthPGH.Views.AcaPlansView({
         params: this.params,
         collection: this.plans,
-        household: this.household
+        household: this.household,
+        vent: this.vent
       });
 
       view.render();
@@ -150,7 +161,11 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
   },
 
   _renderMetalLevelFilters: function() {
-    var view = new HealthPGH.Views.AcaMetalLevelFiltersView({model: this.params, household: this.household });
+    var view = new HealthPGH.Views.AcaMetalLevelFiltersView({
+      vent: this.vent, 
+      model: this.params, 
+      household: this.household 
+    });
   
     view.render();
     this._getMetalLevelsElement().append( view.$el );

@@ -2,12 +2,12 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
   el: '#app-view',
 
   routes: {
-    "": "main",
-    "(list:ages)(/metal:metal)(/plan:id)(/compare:plan_ids)": "main",
-    //"compare:ids(/a:applicants)": "compare"
+    "": "list",
+    "(ages:ages)(/)(except:metal)(/)(compare:plan_ids)": "list",
     "plan/:id(/ages:ages)(/compare:plan_ids)": "plan",
-    "edit(:ages)": "application",
-    "filter": "inputFilters"
+    "edit(/ages:ages)": "application",
+    "filter(/except:metal)": "inputFilters",
+    "vs:plan_ids(/ages:ages)": "planComparison"
   },
 
   initialize: function(opts) {
@@ -32,52 +32,72 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
     Backbone.history.start({ root: r});
   },
 
-  main: function( ages, metal_levels, plan_id, compare_ids) {
-
-    //this._stopListening();
-
+  list: function( ages, metal_levels, compare_ids) {
     var m = this._parseMetalLevels( metal_levels ),
-      cids = this._parseCompareIds();
+      cids = this._parseCompareIds( compare_ids );
+
+    this.household.applicants.reset( this._parseApplicants( ages ), {silent: !0});
+    if (!this.household.isEligibleForCatastrophicCoverage()) {  m.push('catastrophic'); }
 
     //TODO ensure plans to compare are set to saved! 
     this.search_params.set({
-      metal_levels:  m,
-      selected_plan_id: plan_id ? plan_id.slice(1) : null,
+      except_metal_levels:  m,
       compare_ids: cids
     }, {silent: !0});
 
-    this.household.applicants.reset( this._parseApplicants( ages ));
+    this.plans.silentlySelectForComparison(this.search_params.getComparisonPlanIds());
+    this.vent.trigger("pricing:reset");
 
-    //this._startListening();
     this.onShowList();
   },
 
   application: function(ages) {
-    this.household.applicants.reset( this._parseApplicants(ages));
+    this.household.applicants.reset( this._parseApplicants(ages), {silent: !0});
     this.onShowApplication();
   },
 
   plan: function(plan_id, ages, compare_ids) {
-    console.log("PLAN");
+    var cids = this._parseCompareIds( compare_ids )
 
     this.search_params.set({
-      selected_plan_id: plan_id
-    });
+      selected_plan_id: plan_id,
+      compare_ids: cids
+    }, {silent: !0});
 
-    this.household.applicants.reset( this._parseApplicants(ages));
-    var c_ids = this._parseCompareIds( compare_ids )
+    this.household.applicants.reset( this._parseApplicants(ages), {silent: !0});
+    this.plans.silentlySelectForComparison(this.search_params.getComparisonPlanIds());
+    this.vent.trigger("pricing:reset");
+
     this.onShowPlan();
   },
 
-  inputFilters: function() {
+  inputFilters: function(excepted_metals) {
+
+    var m = this._parseMetalLevels(excepted_metals);
+    this.search_params.set({
+      except_metal_levels: m
+    });
+
     this.onShowFilters();
+  },
+
+  planComparison: function( plan_ids, ages ) {
+    this.search_params.set({
+      compare_ids: this._parseCompareIds(plan_ids)
+    }, {silent: !0})
+
+    this.household.applicants.reset( this._parseApplicants(ages), {silent: !0});
+    this.plans.silentlySelectForComparison(this.search_params.getComparisonPlanIds());
+
+    this.vent.trigger("pricing:reset");
+    this.onShowPlanComparison();
   },
 
   _parseApplicants: function(ages) {
     var a = [];
 
     if (!_.isEmpty(ages)) {
-      a = _.map(ages.split(","), function(p) {
+      a = _.map(ages.slice(1).split(","), function(p) {
         return new HealthPGH.Models.AcaApplicant({age: parseInt(p)});
       });
     }
@@ -85,20 +105,23 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
     return a; 
   },
 
-  _parseMetalLevels: function( metal_levels ) {
-    //don't set metal levels to empty array just because none were passed in
-    var m = null;
-    if (!_.isEmpty(metal_levels)) {
-      m = _.uniq(metal_levels.slice(1).split(","));
-    } else {
-      m = this.search_params.getMetalLevelsArray();
+  _parseMetalLevels: function( excepted_metals ) {
+    var m = [];
+
+    if (!_.isEmpty(excepted_metals)) {
+      m = excepted_metals.slice(1).split(",");
     } 
 
     return m;
   },
 
   _parseCompareIds: function(ids) {
-    return ids ? _.uniq(compare_ids.slice(1).split(",")) : []
+    var a = [];
+    if ("string" == (typeof ids)) {
+       a = _.map( ids.slice(1).split(","), function(id) { return parseInt(id); });
+    }
+
+    return a;
   },
 
   onShowApplication: function() {
@@ -112,7 +135,6 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
   },
 
   onShowList: function()  {
-    console.log("LIST");
     var view = new HealthPGH.Views.AcaMainView({
       vent: this.vent,
       params: this.search_params,
@@ -124,15 +146,10 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
     this._swap(view);
   },
 
-  onShowComparison: function() {
-    var ids = this.search_params.getComparisonIds(),
-      plans = this.plans.filter(function(m) { var id = m.get('id'); return _.indexOf(ids, id) >= 0 ? true : false;});
-    console.log(ids, plans);
-
-    var v = new HealthPGH.Views.AcaPlanComparisonView({
+  onShowPlanComparison: function() {
+    var view = new HealthPGH.Views.AcaPlanComparisonView({
       vent: this.vent,
-      plans: plans, 
-      household: this.household,
+      collection: this.plans, 
       params: this.search_params
     });
 
@@ -165,12 +182,11 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
 
   _startListening: function() {
     var ctx = this;
-    console.log("START");
 
     this.listenTo(this.vent, "show:application", this.onShowApplication);
     this.listenTo(this.vent, "show:list", this.onShowList);
     this.listenTo(this.vent, "show:plan", this.onShowPlan);
-    this.listenTo(this.vent, "show:comparison", this.onShowComparison);
+    this.listenTo(this.vent, "show:comparison", this.onShowPlanComparison);
     this.listenTo(this.vent, "show:filters", this.onShowFilters);
   },
 

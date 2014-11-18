@@ -1,0 +1,137 @@
+<div class="plan-comparison-controls">
+  <button class="page-back btn btn-link"><span class="glyphicon glyphicon-chevron-left"></span>Previous</button>
+  <span style="display:inline-block; width: 150px;">Plan Comparison <br>(Page <%= current_page %> of <%= total_pages %>)</span> 
+  <button class="page-next btn btn-link">Next <span class="glyphicon glyphicon-chevron-right"></span></button>
+</div>
+
+  <table class="table">
+    <thead>
+      <th>&nbsp;</th>
+      <th width="27%"><%= plan1_marketing_name %></th>
+      <th width="27%"><%= plan2_marketing_name %></th>
+      <th width="27%"><%= plan3_marketing_name %></th>
+    </thead>
+
+    <tr>
+      <td>
+        Estimated Premium per Month
+      </td>
+      <td>
+        <%= plan1_gross_premium %>
+      </td>
+      <td>
+        <%= plan2_gross_premium %>
+      </td>    
+      <td>
+        <%= plan3_gross_premium %>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Metal Level
+      </td>
+      <td>
+        <span class="metal-level <%= plan1_metal_level_name %>"><%= plan1_metal_level_name %></span>
+      </td>
+      <td>
+        <span class="metal-level <%= plan2_metal_level_name %>"><%= plan2_metal_level_name %></span>
+      </td>
+      <td>
+        <span class="metal-level <%= plan3_metal_level_name %>"><%= plan3_metal_level_name %></span>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Network Type
+      </td>
+      <td>
+        <%= plan1_network_type %>
+      </td>
+      <td>
+        <%= plan2_network_type %>
+      </td>
+
+      <td>
+        <%= plan3_network_type %>
+      </td>
+
+    </tr>
+  </table>
+
+<!--
+  <table class="table">
+    <thead>
+      <th colspan="3">Medical Costs</th>
+    </thead>
+    <tr>
+      <td>
+        Primary Doctor Office Visit
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Specialist Office Visit
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Emergency Room Visit
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Hospital Stay
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tfoot>
+      <td colspan="3">
+        Tip:  Avoid paying higher costs!  Search the <a href="<%= plan1_network_url %>" target="_blank">Provider Directory</a> to ensure your doctors are in-network.
+      </td>
+    </tfoot>
+  </table>
+
+
+  <table class="table">
+    <thead>
+      <th colspan="3">Prescription Drug Costs</th>
+    </thead>
+    <tr>
+      <td>
+        Covered Generics
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Preferred Brand-Name Drugs
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Non-Preferred Brand Drugs
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Specialty Drugs
+      </td>
+      <td>
+      </td>
+    </tr>
+ </table> 
+-->

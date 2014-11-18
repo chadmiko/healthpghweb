@@ -1,7 +1,7 @@
 HealthPGH.Models.AcaSearchParams = Backbone.Model.extend({
   
   defaults: {
-    metal_levels: ['platinum','gold','silver','bronze','catastrophic'],
+    except_metal_levels: [],
     selected_plan_id: null,
     compare_ids: [],
     view: null  //list, application, filters, compare
@@ -17,16 +17,6 @@ HealthPGH.Models.AcaSearchParams = Backbone.Model.extend({
     this.set({selected_plan_id: id});
   },
 
-  getView: function() {
-    return this.get('view');
-  },
-
-  setView: function(v) {
-    this.unset('view', {silent: !0});
-    this.set({view: v});
-    //this.trigger("change:view");
-  },
-
   getComparisonPlanIds: function() {
     return this.get('compare_ids');
   },
@@ -38,6 +28,10 @@ HealthPGH.Models.AcaSearchParams = Backbone.Model.extend({
   hasPlansToCompare: function() {
     var a = this.get('compare_ids');
     return _.isEmpty(a) ? !1 : (a.length > 0);
+  },
+
+  isPlanSelectedForComparison: function(id) {
+    return _.indexOf(this.get('compare_ids'), id) >= 0;
   },
 
   toggleComparisonPlan: function(id, selected) {
@@ -55,31 +49,33 @@ HealthPGH.Models.AcaSearchParams = Backbone.Model.extend({
   },
 
   // helps with routing
-  getMetalLevelOptions: function() {
-    return this.get('metal_levels').join(",");
+  getExceptedMetalLevels: function() {
+    return this.get('except_metal_levels');
   },
 
-  getMetalLevelsArray: function() {
-    return this.get('metal_levels');
-  },
-
-  hasMetalLevel: function(str) {
+  isMetalLevelIncluded: function(str) {
     var s = str.toLowerCase();
-    return _.find(this.get('metal_levels'), function(v) { return v == s });
+    return _.indexOf(this.get('except_metal_levels'), s) < 0;
   },
 
-  toggleMetalLevel: function(metal, selected) {
-    var m = this.get('metal_levels'),
+  excludeMetalLevel: function(metal) {
+    var m = this.get('except_metal_levels'),
       lower = metal.toLowerCase();
 
-    if (selected) {
-      m.push(lower); 
-    } else {
-      m = _.without(m, lower);
-    }
-    
-    this.unset('metal_levels', {silent: !0});  
-    this.set({metal_levels: _.uniq(m)});
-  }
+    m.push(lower); 
+    m = _.uniq(m);
 
+    this.set('except_metal_levels', m, {silent: true});
+    this.trigger("change:except_metal_levels");
+  },
+
+  includeMetalLevel: function(metal) {
+    var m = this.get('except_metal_levels'),
+      lower = metal.toLowerCase();
+
+    m = _.uniq(_.without(m, lower));
+
+    this.set("except_metal_levels", m, {silent: true});
+    this.trigger("change:except_metal_levels");
+  }
 });

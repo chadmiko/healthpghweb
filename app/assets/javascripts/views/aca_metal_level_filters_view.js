@@ -4,15 +4,14 @@ HealthPGH.Views.AcaMetalLevelFiltersView = Backbone.View.extend({
   model: HealthPGH.Models.AcaSearchParams,
 
   events: {
-    "click input[type='checkbox']": "onFilterChange"
+    "change input[type='checkbox']": "onFilterChange"
   },
 
   initialize: function(o) { 
-    this._views = [];
-    this.model = o.model;
-    this.household = o.household
-    this.listenTo(this.model, "change", this.onModelChange);
-    //this.listenTo(this.household, "change", this.render);
+    this._views = [],
+    this.model = o.model,
+    this.household = o.household,
+    this.vent = o.vent;
   },
 
   leave: function() {
@@ -23,10 +22,13 @@ HealthPGH.Views.AcaMetalLevelFiltersView = Backbone.View.extend({
   onFilterChange: function(ev) {
     var metal = $(ev.target).val(), 
       selected = $(ev.target).is(":checked");
-    this.model.toggleMetalLevel( metal, selected );
+
+    selected == true ? this.model.includeMetalLevel( metal ) : this.model.excludeMetalLevel( metal );
+    this.vent.trigger("ui:metal_level_filter_change");
   },
   
   onModelChange: function() {
+    console.log("onModelChange FiltersView");
     this.render();
   },
 
@@ -41,11 +43,11 @@ HealthPGH.Views.AcaMetalLevelFiltersView = Backbone.View.extend({
     this._removeViews();
 
     var a = {
-      platinum: this.model.hasMetalLevel('platinum'),
-      gold: this.model.hasMetalLevel('gold'),
-      silver: this.model.hasMetalLevel('silver'),
-      bronze: this.model.hasMetalLevel('bronze'),
-      catastrophic: this.model.hasMetalLevel('catastrophic'),
+      platinum: this.model.isMetalLevelIncluded('platinum'),
+      gold: this.model.isMetalLevelIncluded('gold'),
+      silver: this.model.isMetalLevelIncluded('silver'),
+      bronze: this.model.isMetalLevelIncluded('bronze'),
+      catastrophic: this.model.isMetalLevelIncluded('catastrophic'),
       show_catastrophic: this.household.isEligibleForCatastrophicCoverage() 
     }, 
     h = this.template(a);

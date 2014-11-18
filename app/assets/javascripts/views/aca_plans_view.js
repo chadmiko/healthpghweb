@@ -8,9 +8,10 @@ HealthPGH.Views.AcaPlansView = Backbone.View.extend({
     this._views = [],
       this.household = o.household,
       this.collection = o.collection,
-      this.params = o.params;
+      this.params = o.params,
+      this.vent = o.vent;
 
-    this.listenTo(this.params, "change:metal_levels", this.render);
+    this.listenTo(this.params, "change:except_metal_levels", this.render);
   },
 
   leave: function() {
@@ -22,7 +23,7 @@ HealthPGH.Views.AcaPlansView = Backbone.View.extend({
     var ctx = this,
       s = this.collection.filter(function(model) {
       return (
-        ctx.params.hasMetalLevel( model.get('metal_level_name') )
+        ctx.params.isMetalLevelIncluded( model.get('metal_level_name') )
       );
     });
 
@@ -66,7 +67,7 @@ HealthPGH.Views.AcaPlansView = Backbone.View.extend({
       ctx = this;
 
     _.each( this.plansToShow(), function(model) {
-      var v = new HealthPGH.Views.AcaPlanView({ model: model, household: ctx.household, params: ctx.params });
+      var v = new HealthPGH.Views.AcaPlanView({ model: model, household: ctx.household, vent: ctx.vent });
       v.render();
       $node.append( v.$el ); 
       ctx._views.push( v )  

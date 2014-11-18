@@ -358,6 +358,18 @@ h3 {
   @extend .list-controls;
 }
 
+.plan-comparison-controls {
+  @extend .text-center;
+
+  padding: 10px;
+  .btn-link {
+    color: #777;
+  }
+  .btn-link.active {
+    color: $link-color;
+  }
+}
+
 .affix-logo {
   background: asset-url('logo-141x36.png') no-repeat;
   display: none;

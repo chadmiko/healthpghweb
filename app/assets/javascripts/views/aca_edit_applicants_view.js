@@ -33,9 +33,15 @@ HealthPGH.Views.AcaEditApplicantsView = Backbone.View.extend({
 
   onApplicationComplete: function() {
     var id = this.params.getSelectedPlanId();
+    
+    if(this.model.getApplicantsOverAge(29).length > 0) {
+      this.params.excludeMetalLevel('catastrophic');
+    }
+
+    this.vent.trigger("pricing:reset");
 
     if (id) { 
-      Backbone.history.navigate( RB.planPath( this.model.applicants, this.params ));
+      Backbone.history.navigate( RB.planPath( this.model, this.params ));
       this.vent.trigger("show:plan");
     } else {
       console.log( RB.listPlansPath( this.model, this.params ));
@@ -51,7 +57,7 @@ HealthPGH.Views.AcaEditApplicantsView = Backbone.View.extend({
   },
     
   updateRoute: function() {
-    Backbone.history.navigate( RB.editApplicationPath( this.model ));
+    Backbone.history.navigate( RB.editApplicationPath( this.model, this.params ));
   },
 
   updateView: function() {

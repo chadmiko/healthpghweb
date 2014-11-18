@@ -10,6 +10,8 @@ HealthPGH.Views.AcaPlanFiltersView = Backbone.View.extend({
       this.params = o.params,
       this.household = o.household,
       this.vent = o.vent;
+
+    this.listenTo(this.params, "change:except_metal_levels", this.onMetalLevelChange);
   }, 
 
   leave: function() {
@@ -18,8 +20,14 @@ HealthPGH.Views.AcaPlanFiltersView = Backbone.View.extend({
   },
 
   onShowPlans: function() {
+    console.log("onShowPlans PlanFiltersView");
     Backbone.history.navigate( RB.listPlansPath( this.household, this.params));
     this.vent.trigger("show:list");
+  },
+
+  onMetalLevelChange: function() {
+    console.log("onMetalLevelChange PlanFiltersView");
+    Backbone.history.navigate( RB.listPlansPath( this.household, this.params ));
   },
 
   render: function() {

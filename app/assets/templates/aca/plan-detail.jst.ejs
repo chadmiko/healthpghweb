@@ -10,18 +10,25 @@
     <div class="box-shadow box-border"> 
       <div class="sob-heading">
         <div class="sob-issuer-info">
-          <h3 class="plan-marketing-name" style="margin:0"><%= marketing_name %></h3>
+          <div class="row">
+            <div class="col-md-10 col-sm-10">
+              <h3 class="plan-marketing-name" style="margin:0"><%= marketing_name %></h3>
+            </div>
+            <div class="col-md-2 col-sm-2">
+            </div>
+          </div>
           <div>
-            <span class="issuer-name"><%= issuer_name %></span> 
-            <span class="metal-level" style="padding-left: 10px"><%= metal_level_name %> | <span class="network-type"><%= network_type %></strong></span>
+            <span class="issuer-name"><%= issuer_name %></span>
+            <br>
+            <span class="metal-level"><%= metal_level_name %> | <span class="network-type"><%= network_type %></strong></span>
           </div>
         </div>
 
         <div class="row sob-pricing">
           <div class="col-sm-4 col-md-5">
             <div class="hide pricing-notice">
-              <span class="premium-value"> $<%= Utils.Number.formatFixed(net_premium, 2) %></span> per month estimate</span>
-              <p class="hide tobacco-notice"><small>This is a Non-tobacco rate; your final price may be higher.</small></p>
+              <span class="premium-value"> $<%= Utils.Number.formatFixed(net_premium, 2) %></span> <span>per month estimate</span>
+              <p class="tobacco-notice"><small>Tobacco users may pay more.</small></p>
             </div>
             <div class="hide add-applicants-notice">
               <button type="button" class="add-applicants btn btn-primary"><span class="glyphicon glyphicon-user"></span> Add Applicants to See Prices</button>

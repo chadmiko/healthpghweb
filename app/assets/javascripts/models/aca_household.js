@@ -10,10 +10,8 @@ HealthPGH.Models.AcaHousehold = Backbone.Model.extend({
   initialize: function(o) {
     var ctx = this;
     this.applicants = o.applicants;
-    this.params = o.params;
     this.listenTo( this.applicants, "change", this.onApplicantChange );
     this.listenTo( this.applicants, "reset", this.onApplicantChange );
-
   },
 
   onApplicantChange: function() {
@@ -28,12 +26,6 @@ HealthPGH.Models.AcaHousehold = Backbone.Model.extend({
     if ( l == 0 ) {
       this.set('subsidy_amount', null);
     }
-
-    if (this.isEligibleForCatastrophicCoverage()) {
-      this.params.toggleMetalLevel('catastrophic', !0);
-    } else {
-      this.params.toggleMetalLevel('catastrophic', !1);
-    }
   },
 
   onAffordabilityChange: function() {
@@ -46,6 +38,9 @@ HealthPGH.Models.AcaHousehold = Backbone.Model.extend({
   },
 
   isEligibleForCatastrophicCoverage: function() {
+    //don't discriminate against catastrophic when no applicants
+    if(this.applicants.length == 0) return !0;
+
     var overs = _.filter(this.applicants.models, function(m) { var a = m.get('age'); return a > 30; });
     return overs.length == 0;    
   },
