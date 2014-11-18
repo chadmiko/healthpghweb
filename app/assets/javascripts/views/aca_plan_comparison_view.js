@@ -127,7 +127,7 @@ HealthPGH.Views.AcaPlanComparisonView = Backbone.View.extend({
   },
 
   _totalPages: function() {
-    return Math.floor(this._plansToCompare.length / 3) + 1;
+    return Math.ceil(this._plansToCompare.length / 3);
   },
 
   // YOU MUST INCLUDE TRAILING '_' on prefix!!!
