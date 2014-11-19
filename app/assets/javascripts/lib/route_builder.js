@@ -24,7 +24,7 @@ RB.planPath = function(household, params) {
   }
 
   if(!_.isEmpty(cids)) {
-    a.push("compare", cids.join(","));
+    a.push("compare:", cids.join(","));
   }
    
   console.log("PLAN", a);
@@ -59,7 +59,7 @@ RB.listPlansPath = function( household, params ){
   }
 
   if( compare_ids.length > 0 ) {
-    a.push( "compare" + compare_ids.join(",") )
+    a.push( "compare:" + compare_ids.join(",") )
   }
 
   return a.join("/");
