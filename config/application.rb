@@ -29,8 +29,6 @@ module Healthpghweb
  
     config.autoload_paths += Dir["#{config.root}/app/serializers"] 
 
-    config.assets.precompile += %w( html5shiv.min.js )
-
     config.generators do |g|
       g.test_framework :rspec,
         fixtures: false, #set them manually
