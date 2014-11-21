@@ -24,11 +24,9 @@ RB.planPath = function(household, params) {
   }
 
   if(!_.isEmpty(cids)) {
-    a.push("compare:", cids.join(","));
+    //a.push("compare:", cids.join(","));
   }
    
-  console.log("PLAN", a);
- 
   return a.join("/");
 };
 
@@ -59,7 +57,10 @@ RB.listPlansPath = function( household, params ){
   }
 
   if( compare_ids.length > 0 ) {
-    a.push( "compare:" + compare_ids.join(",") )
+    var c =  _.filter(compare_ids, function(id) { return !isNaN(id); });
+    if ( c.length > 0 ) {
+      a.push( "compare:" + c.join(","));
+    }
   }
 
   return a.join("/");

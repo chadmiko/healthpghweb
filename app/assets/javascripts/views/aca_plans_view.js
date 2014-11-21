@@ -29,7 +29,7 @@ HealthPGH.Views.AcaPlansView = Backbone.View.extend({
 
     if(s.length == 0) return s; 
 
-    var t = s[0].isPremiumCalculated(),
+    var t = s[0].isPremiumCalculated() == true,
       field = ( t  ? 'net_premium' : 'metal_level_value'),
       sort_by = function(field, reverse, primer){
 

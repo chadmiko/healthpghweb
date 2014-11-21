@@ -20,14 +20,12 @@ HealthPGH.Views.AcaPlanFiltersView = Backbone.View.extend({
   },
 
   onShowPlans: function() {
-    console.log("onShowPlans PlanFiltersView");
     Backbone.history.navigate( RB.listPlansPath( this.household, this.params));
     this.vent.trigger("show:list");
   },
 
   onMetalLevelChange: function() {
-    console.log("onMetalLevelChange PlanFiltersView");
-    Backbone.history.navigate( RB.listPlansPath( this.household, this.params ));
+    //Backbone.history.navigate( RB.listPlansPath( this.household, this.params ));
   },
 
   render: function() {

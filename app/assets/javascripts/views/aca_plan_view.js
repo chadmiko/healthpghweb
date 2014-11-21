@@ -23,8 +23,8 @@ HealthPGH.Views.AcaPlanView = Backbone.View.extend({
 
   onCompareChange: function() {
     var s = this.$el.find("input[type='checkbox']").get(0).checked;
-    this.model.toggleSaved( s );
-    this.vent.trigger("ui:plan_saved", this.model);
+    this.model.updateSaved( s );
+    //this.vent.trigger("ui:plan_saved", this.model);
   },
  
   getAttributesForView: function() {

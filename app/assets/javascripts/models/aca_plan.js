@@ -14,8 +14,9 @@ HealthPGH.Models.AcaPlan = Backbone.Model.extend({
     saved: !1
   },
 
-  toggleSaved: function(saved) {
-    this.set({saved: (saved == !0)});
+  updateSaved: function(saved) {
+    var s = _.extend({}, {saved: (saved == !0)});
+    this.set(s);
   },
 
   isSaved: function() {
@@ -68,7 +69,15 @@ HealthPGH.Models.AcaPlan = Backbone.Model.extend({
   getFamilyOOPMax: function() {
     var c = this.getCurrentCostSharing();
     return c['medical_max_oop_family'];
-  }
+  },
 
+  resetPricing: function(gross, subsidy) {
+    var s = _.extend({}, {gross_premium: gross, subsidy: subsidy, net_premium: isNaN(gross) ? null : (gross-subsidy)});
+    this.set(s);
+  },
+
+  toAttributes: function() {
+    return _.extend( this.attributes, this.getCurrentCostSharing() ); 
+  }
 });
 

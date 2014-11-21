@@ -4,10 +4,6 @@ HealthPGH.Collections.AcaPlans = Backbone.Collection.extend({
 
   comparator: 'net_premium',
 
-  selectForComparison: function(ids) {
-
-  },
-
   silentlySelectForComparison: function(ids) {
     var p = this.each(function(m) { 
       var v = _.indexOf(ids, m.get('id'));
@@ -15,8 +11,11 @@ HealthPGH.Collections.AcaPlans = Backbone.Collection.extend({
     });
   },
 
+  unselectCatastrophic: function() {
+    _.map( this.where({metal_level_name: 'Catastrophic', saved: !0}), function(m) { m.updateSaved(!1) });
+  },
 
-  isEmpty: function() {
-    return this.length == 0;
+  numberSaved: function() {
+    return this.where({saved: !0}).length;
   }
 });

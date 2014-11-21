@@ -27,7 +27,6 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
     })
 
     this._startListening();
-
     var r = location.pathname + location.search;
     Backbone.history.start({ root: r});
   },
@@ -37,17 +36,20 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
       cids = this._parseCompareIds( compare_ids );
 
     this.household.applicants.reset( this._parseApplicants( ages ), {silent: !0});
-    if (!this.household.isEligibleForCatastrophicCoverage()) {  m.push('catastrophic'); }
-
-    //TODO ensure plans to compare are set to saved! 
     this.search_params.set({
       except_metal_levels:  m,
       compare_ids: cids
     }, {silent: !0});
 
-    this.plans.silentlySelectForComparison(this.search_params.getComparisonPlanIds());
-    this.vent.trigger("pricing:reset");
 
+    this.plans.silentlySelectForComparison(this.search_params.getComparisonPlanIds());
+
+    if (!this.household.isEligibleForCatastrophicCoverage()) {      
+      this.search_params.excludeMetalLevel('catastrophic');
+      this.plans.unselectCatastrophic(); 
+    }
+
+    this.vent.trigger("pricing:reset");
     this.onShowList();
   },
 
@@ -56,18 +58,21 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
     this.onShowApplication();
   },
 
-  plan: function(plan_id, ages, compare_ids) {
-    var cids = this._parseCompareIds( compare_ids )
+  plan: function(plan_id, ages) {
+    //var cids = this._parseCompareIds( compare_ids )
 
     this.search_params.set({
       selected_plan_id: plan_id,
-      compare_ids: cids
+      //compare_ids: cids
     }, {silent: !0});
 
     this.household.applicants.reset( this._parseApplicants(ages), {silent: !0});
-    this.plans.silentlySelectForComparison(this.search_params.getComparisonPlanIds());
-    this.vent.trigger("pricing:reset");
+    //this.plans.silentlySelectForComparison(this.search_params.getComparisonPlanIds());
+    //if (!this.household.isEligibleForCatastrophicCoverage()) {      
+    //  this.plans.unselectCatastrophic(); 
+    //}
 
+    this.vent.trigger("pricing:reset");
     this.onShowPlan();
   },
 
@@ -82,12 +87,17 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
   },
 
   planComparison: function( plan_ids, ages ) {
+    this.household.applicants.reset( this._parseApplicants(ages), {silent: !0});
+
     this.search_params.set({
       compare_ids: this._parseCompareIds(plan_ids)
     }, {silent: !0})
 
-    this.household.applicants.reset( this._parseApplicants(ages), {silent: !0});
+    
     this.plans.silentlySelectForComparison(this.search_params.getComparisonPlanIds());
+    if (!this.household.isEligibleForCatastrophicCoverage()) {      
+      this.plans.unselectCatastrophic(); 
+    }
 
     this.vent.trigger("pricing:reset");
     this.onShowPlanComparison();
@@ -150,7 +160,8 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
     var view = new HealthPGH.Views.AcaPlanComparisonView({
       vent: this.vent,
       collection: this.plans, 
-      params: this.search_params
+      params: this.search_params,
+      household: this.household
     });
 
     this._swap(view);
@@ -191,7 +202,7 @@ HealthPGH.Routers.AcaPlanSearch = Backbone.Router.extend({
   },
 
   _scrollTop: function() {
-    $(window).scrollTop(0);
+    $("html, body").animate({scrollTop: 0}, "fast");
   },
 
   _stopListening: function() {

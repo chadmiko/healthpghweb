@@ -22,9 +22,18 @@ HealthPGH.Models.AcaPricingEngine = Backbone.Model.extend({
 
       //Premium cannot exceed Max allowed by HH  
     var ctx = this; 
-    _.map(this.plans.models, function(m) { ctx.updatePlanPricing(m); });
-      
+
+    if (this.household.isEmpty()) {
+      _.map( this.plans.models, function(m) { m.resetPricing(null, null); }); 
+    } else {
+      _.map(this.plans.models, function(m) { ctx.updatePlanPricing(m); }); 
+    }
+
     this.plans.trigger("repriced");
+  },
+
+  resetPlanPricing: function(plan) {
+
   },
 
   updatePlanPricing: function( plan ) {
@@ -35,7 +44,7 @@ HealthPGH.Models.AcaPricingEngine = Backbone.Model.extend({
       base_age = plan.getBaseAge();
 
     //TODO get subsidy
-    //console.log("SUBSIDY IS: " );
+    //HealthPGH.log("SUBSIDY IS: " );
 
     //TODO only price 5 oldest household members
     _.each( this.household.applicants.models, function(m) {
@@ -60,7 +69,7 @@ HealthPGH.Models.AcaPricingEngine = Backbone.Model.extend({
       non_smoker_rate = curve[age.toString()] / curve[base_age.toString()] * base_rate;
 
     // TODO adjust for smoker rates
-    //console.log( curve[age.toString()], curve[base_age.toString()], base_rate, non_smoker_rate ); 
+    //HealthPGH.log( curve[age.toString()], curve[base_age.toString()], base_rate, non_smoker_rate ); 
     return non_smoker_rate; 
   }
 

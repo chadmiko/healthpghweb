@@ -19,8 +19,8 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
     this.county = o.county;
     this.vent = o.vent;
 
-    this.listenTo(this.vent, "ui:metal_level_filter_change", this.onMetalLevelChange);
-    this.listenTo(this.vent, "ui:plan_saved", this.onComparisonChange);
+    this.listenTo(this.params, "change:except_metal_levels", this.onMetalLevelChange);
+    this.listenTo(this.plans, "change:saved", this.onComparisonChange);
   },
 
   leave: function() {
@@ -46,26 +46,30 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
 
   onRefine: function(ev) {
     this.params.setSelectedPlanId(null);
-    //this.params.resetComparisonPlanIds();
+    //this.params.resetComparisonPlanIds([]);
     //console.log("onRefine MainView");
     Backbone.history.navigate( RB.filterPlansPath( this.household, this.params ));
     this.vent.trigger("show:filters");
   },
 
   onShowComparison: function() {
-    console.log("onShowComparison MainView");
+    //console.log("onShowComparison MainView");
     Backbone.history.navigate( RB.comparePlansPath( this.household, this.params ));
     this.vent.trigger("show:comparison");   
   },
 
   onComparisonChange: function(plan) {
-    this.params.toggleComparisonPlan( plan.get('id'), plan.isSaved());
+    //console.log("onComparisonChange MainView", stackTrace());
+    this.params.updateComparisonPlan( plan.get('id'), plan.isSaved() );
     this.updateComparisonDisplay();
     Backbone.history.navigate( RB.listPlansPath( this.household, this.params ));
   },
 
-  onMetalLevelChange: function() {
+  onMetalLevelChange: function(a, b) {
     //console.log("onMetalLevelChange MainView");
+    if (!this.params.isMetalLevelIncluded('catastrophic')) {
+      this.plans.unselectCatastrophic();
+    }  
     Backbone.history.navigate( RB.listPlansPath( this.household, this.params ));
   },
 
@@ -99,7 +103,7 @@ HealthPGH.Views.AcaMainView = Backbone.View.extend({
   },
 
   updateComparisonDisplay: function() {
-    var j = this.params.getComparisonPlanIds().length;
+    var j = this.plans.numberSaved();
 
     if (!this.$compareBtn) {
       this.$compareBtn = this.$el.find('#compare');

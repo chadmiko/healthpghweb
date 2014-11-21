@@ -14,13 +14,13 @@ HealthPGH.Views.AcaEditApplicantsView = Backbone.View.extend({
     this._views = [],
       this.model = o.model,
       this.vent = o.vent,
-      this.params = o.params,
+      this.params = o.params;
       ctx = this;
 
     this.listenTo(this.model.applicants, 'add', this.addItem);
     this.listenTo(this.model.applicants, 'remove', this.removeItem);
     this.listenTo( this.model.applicants, "change", this.updateView);
-
+  
     this.listenTo(this.model.applicants, 'add', this.updateRoute);
     this.listenTo(this.model.applicants, 'remove', this.updateRoute);
     this.listenTo(this.model.applicants, 'change', this.updateRoute);
@@ -44,7 +44,6 @@ HealthPGH.Views.AcaEditApplicantsView = Backbone.View.extend({
       Backbone.history.navigate( RB.planPath( this.model, this.params ));
       this.vent.trigger("show:plan");
     } else {
-      console.log( RB.listPlansPath( this.model, this.params ));
       Backbone.history.navigate( RB.listPlansPath( this.model, this.params ));
       this.vent.trigger("show:list");
     }
@@ -149,7 +148,7 @@ HealthPGH.Views.AcaEditApplicantsView = Backbone.View.extend({
   },
 
   _resetTemplate: function() {
-    var tpl = this.template();
+    var tpl = this.template({ formatted_phone: '<%= number_to_phone(SiteSetting.customer_service_phone, area_code: true) %>'});
     this.$el.html(tpl);
     this.$thead = this.$el.find('thead');
     this.$btn_finished = this.$el.find('#application_complete');

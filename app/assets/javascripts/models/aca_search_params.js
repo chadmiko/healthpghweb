@@ -3,8 +3,7 @@ HealthPGH.Models.AcaSearchParams = Backbone.Model.extend({
   defaults: {
     except_metal_levels: [],
     selected_plan_id: null,
-    compare_ids: [],
-    view: null  //list, application, filters, compare
+    compare_ids: []
   },
 
   //helps w/routing
@@ -13,16 +12,18 @@ HealthPGH.Models.AcaSearchParams = Backbone.Model.extend({
   },
  
   setSelectedPlanId: function(id) {
-    this.unset('selected_plan_id', {silent: !0});
-    this.set({selected_plan_id: id});
+    var s = _.clone(this.get('selected_plan_id'));
+
+    this.set({selected_plan_id: id}, {silent: 1});
+    this.trigger("change:selected_plan_id");
   },
 
   getComparisonPlanIds: function() {
     return this.get('compare_ids');
   },
 
-  resetComparisonPlanIds: function() {
-    this.set({compare_ids: []});
+  resetComparisonPlanIds: function(ids_array) {
+    this.set({compare_ids: ids_array});
   },
 
   hasPlansToCompare: function() {
@@ -34,8 +35,8 @@ HealthPGH.Models.AcaSearchParams = Backbone.Model.extend({
     return _.indexOf(this.get('compare_ids'), id) >= 0;
   },
 
-  toggleComparisonPlan: function(id, selected) {
-    var p = this.get('compare_ids'),
+  updateComparisonPlan: function(id, selected) {
+    var p = _.clone(this.get('compare_ids')),
       i = parseInt(id);
 
     if (selected ) {
@@ -44,7 +45,6 @@ HealthPGH.Models.AcaSearchParams = Backbone.Model.extend({
       p = _.without(p, i);
     }
 
-    this.unset('compare_ids', {silent: !0});
     this.set({compare_ids: _.uniq(p)});
   },
 
@@ -59,23 +59,23 @@ HealthPGH.Models.AcaSearchParams = Backbone.Model.extend({
   },
 
   excludeMetalLevel: function(metal) {
-    var m = this.get('except_metal_levels'),
+    var m = this.get('except_metal_levels').reverse(),
       lower = metal.toLowerCase();
 
     m.push(lower); 
     m = _.uniq(m);
 
-    this.set('except_metal_levels', m, {silent: true});
-    this.trigger("change:except_metal_levels");
+    this.set({except_metal_levels: m}, {silent: !0});
+    this.trigger("change:except_metal_levels"); 
   },
 
   includeMetalLevel: function(metal) {
-    var m = this.get('except_metal_levels'),
+    var m = _.clone(this.get('except_metal_levels')),
       lower = metal.toLowerCase();
 
     m = _.uniq(_.without(m, lower));
 
-    this.set("except_metal_levels", m, {silent: true});
-    this.trigger("change:except_metal_levels");
+    this.set({except_metal_levels:  m}, {silent: !0});
+    this.trigger("change:except_metal_levels"); 
   }
 });

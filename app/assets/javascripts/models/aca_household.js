@@ -41,7 +41,7 @@ HealthPGH.Models.AcaHousehold = Backbone.Model.extend({
     //don't discriminate against catastrophic when no applicants
     if(this.applicants.length == 0) return !0;
 
-    var overs = _.filter(this.applicants.models, function(m) { var a = m.get('age'); return a > 30; });
+    var overs = _.filter(this.applicants.models, function(m) { var a = m.get('age'); return a > 29; });
     return overs.length == 0;    
   },
 

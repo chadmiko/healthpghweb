@@ -24,11 +24,9 @@ HealthPGH.Views.AcaMetalLevelFiltersView = Backbone.View.extend({
       selected = $(ev.target).is(":checked");
 
     selected == true ? this.model.includeMetalLevel( metal ) : this.model.excludeMetalLevel( metal );
-    this.vent.trigger("ui:metal_level_filter_change");
   },
   
   onModelChange: function() {
-    console.log("onModelChange FiltersView");
     this.render();
   },
 
