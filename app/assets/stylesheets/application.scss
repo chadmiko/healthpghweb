@@ -31,7 +31,6 @@ $brand-yellow-lighter: #C39B29;
   @extend .btn-lg;
 }
 
-
 /*
  * Base structure
  */
@@ -64,23 +63,14 @@ body, input, select, option, label {
   border-radius: 0;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
-}
 
-.navbar-brand {
-  padding: 10px 20px 0 10px;
-}
-
-.navbar {
-  .help {
-    font-weight: bold;
-    line-height: 50px;
-    padding: 0 15px 0 0;
+  a {
     color: $brand-blue;
-    a {
-    }
+  }
+  .navbar-text {
+    color: $brand-blue-darker;
   }
 }
-
 
 .box-border {
   border: 1px solid #eee;
@@ -314,27 +304,6 @@ h3 {
   color: $brand-blue;
 }
 
-.affix-list-controls {
-  @extend .clearfix;
-  z-index: 5000;
-  background: #fff;
-}
-
-.affix-list-controls.affix-top {
-  position: static;
-  width: 100%; 
-}
-
-.affix-list-controls.affix {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  padding: 0 15px;
-  width: 100%;
-  border-bottom: 1px solid #e7e7e7;
-  background-color: #f8f8f8;
-}
-
 .list-controls {
   @extend .clearfix;
 
@@ -359,14 +328,107 @@ h3 {
 }
 
 .plan-comparison-controls {
-  @extend .text-center;
+  padding: 20px 10px;
 
-  padding: 10px;
-  .btn-link {
-    color: #777;
+  .btn { 
+    margin: 0 4px 0; 
   }
-  .btn-link.active {
-    color: $link-color;
+
+  .badge {
+    font-size: 18px;
+    padding: 5px 9px;
+  }
+
+  .description {
+    margin: 0;
+    padding: 4px 16px;
+  } 
+}
+
+.static-help {
+  h2 {
+
+  }
+  h3 {
+    color: $brand-blue-lightest;
+    font-size: 26px;
+    padding: 8px;
+  }
+  p {
+    font-size: 16px;
+  }
+}
+
+.plan-comparison {
+  .table-bordered {
+    border: 0;
+  }
+
+  .affix-plan-comparison {
+    z-index: 5000;
+
+    thead > tr > th {
+      border-bottom: 0;
+      font-size: 110%;
+      background: #f8f8f8;
+      //border-right: 2px solid #fff;
+      //border-left: 2px solid #fff;
+      border-top: 0;
+      border-color: #eee; 
+    }
+    thead > tr > th:first-child {
+      color: $brand-blue-lightest;
+      border-left: 0;
+    }
+    thead > tr > th:first-child, 
+    thead > tr > th:last-child {
+      border-right: 0;
+    }
+  }
+
+  .table-bordered > thead > tr > th {
+    border-top: 0;
+    border-bottom-width: 1px;
+  }
+
+  .table-bordered > tbody > tr > td {
+    border-color: #eee;
+    color: #555; 
+    width: 29%;
+  }
+
+  .table-bordered > tbody > tr:first-child > td {
+    color: $brand-blue;
+  }
+
+  .table > tbody > tr > td:first-child {
+    background: #fff;
+    width: auto;
+    font-weight:bold;
+    color: #999;
+    font-size: 12px;
+    border-left: 0;
+  }
+
+
+  th {
+    text-align: center;
+  }
+
+  td {
+    text-align: center;
+  }
+   td:nth-child(0) {
+    text-align: left;
+  }
+}
+
+.affix-visible {
+  display: none;
+}
+.affix {
+  .affix-visible {
+    display:block;
   }
 }
 
@@ -380,6 +442,43 @@ h3 {
 .affix {
   .affix-logo {
     display: block;
+  }
+}
+
+.affix-list-controls {
+  @extend .clearfix;
+  z-index: 5000;
+  background: #fff;
+}
+
+.affix-list-controls.affix-top {
+  position: static;
+  width: 100%; 
+}
+
+.affix-list-controls.affix {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  padding: 0 15px;
+  width: 100%;
+  border-bottom: 1px solid #e7e7e7;
+  background-color: #f8f8f8;
+}
+
+.affix-plan-comparison.affix {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 0 15px;
+  width: 100%;
+
+  border-bottom: 1px solid #e7e7e7;
+  background-color: #f8f8f8;
+
+  thead > tr > th {
+    border-left: 0;
+    border-right: 0;
   }
 }
 
@@ -407,6 +506,17 @@ h3 {
     }
   }
 
+ .navbar-brand {
+   padding: 10px;
+  } 
+  .show-xs {
+    display: inline-block;
+  }
+
+  .hide-xs {
+    display: none;
+  }
+
   .footer {
     a {
       color: $brand-blue-lightest;
@@ -427,6 +537,15 @@ h3 {
     position: fixed;
     top: 0;
     left: 0px;
+    padding: 0 15px;
+    width: 100%;
+    border-bottom: 1px solid #e7e7e7;
+  }
+
+  .affix-plan-comparison.affix {
+    position: fixed;
+    top: 0;
+    left: 0;
     padding: 0 15px;
     width: 100%;
     border-bottom: 1px solid #e7e7e7;
