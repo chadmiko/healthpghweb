@@ -1,44 +1,111 @@
-<div class="plan-comparison-controls">
-  <button class="page-back btn btn-link"><span class="glyphicon glyphicon-chevron-left"></span>Previous</button>
-  <span style="display:inline-block; width: 150px;">Plan Comparison <br>(Page <%= current_page %> of <%= total_pages %>)</span> 
-  <button class="page-next btn btn-link">Next <span class="glyphicon glyphicon-chevron-right"></span></button>
+<div class="plan-comparison-controls clearfix">
+
+  <div class="row">
+    <div class="col-xs-12">
+      <button type="button" class="btn btn-default btn-sm show-list">&lt; Back</button>
+
+      <div class="pull-right">
+          <button class="page-back btn btn-primary btn-circle"><span class="glyphicon glyphicon-chevron-left"></span></button>
+        <% if (total_plans > 0) { %>
+          Page <span class=""><%= current_page %> of <%= total_pages %>
+        <% } %>
+          <button class="page-next btn btn-primary btn-circle"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      </div>
+    </div>
+  </div>
 </div>
 
-  <table class="table">
+<% if(total_plans > 0) { %>
+<div class="" style="position: relative">
+  <table class="table table-bordered affix-plan-comparison">
     <thead>
-      <th>&nbsp;</th>
-      <th width="27%"><%= plan1_marketing_name %></th>
-      <th width="27%"><%= plan2_marketing_name %></th>
-      <th width="27%"><%= plan3_marketing_name %></th>
+      <th>
+        <div class="affix-visible">
+        <h3 style="margin:0; padding:0;">Compare Plans</h3>
+        <button class="btn btn-link show-list">&lt; Return to List</button>
+        </div>
+        &nbsp;
+      </th>
+      <th width="">
+        <%= plan1_issuer_name %> 
+        <%= plan1_marketing_name %>
+        <br>
+        <button data-id="<%= plan1_id %>" class="btn btn-default unsave">Remove</button>
+      </th>
+      <th width="">
+        <%= plan2_issuer_name %> 
+        <%= plan2_marketing_name %>
+        <br>
+        <% if( plan2_marketing_name ) { %><button data-id="<%= plan2_id %>" class="btn btn-default unsave">Remove</button> <% } %>
+      </th>
+      <th width="">
+        <%= plan3_issuer_name %>
+        <%= plan3_marketing_name %>
+        <br>
+        <% if (plan3_marketing_name) { %> <button data-id="<%= plan3_id %>" class="btn btn-default unsave">Remove</button> <% } %>
+      </th>
     </thead>
+  <tbody>
+   <tr>
+      <td>
+        <strong>Estimated<br>Premium per Month</strong><br><small>Non-tobacco rates</small>
+      </td>
+      <td>
+        <% if ( plan1_gross_premium ) { %>
+          <div class="aca-pricing-summary">
+            <span class="net-premium-text"> $<%= Utils.Number.rounded( plan1_net_premium ) %> </span>
+            <br><span class="premium-frequency-text"> per month estimate</span>
 
-    <tr>
-      <td>
-        Estimated Premium per Month
+            <% if (plan1_subsidy && plan1_subsidy > 0) { %>
+              <span style="color: #777">was $<%= Utils.Number.rounded(plan1_gross_premium) %> </span>
+            <% } %>
+          </div>
+        <% } else if (plan1_marketing_name) { %>
+          <button class="btn-link btn add-applicants">Add Applicants</button>
+        <% } %>
       </td>
       <td>
-        <%= plan1_gross_premium %>
-      </td>
-      <td>
-        <%= plan2_gross_premium %>
+        <% if ( plan2_gross_premium ) { %>
+          <div class="aca-pricing-summary">
+            <span class="net-premium-text"> $<%= Utils.Number.rounded( plan2_net_premium ) %> </span>
+            <br><span class="premium-frequency-text"> per month estimate</span>
+
+            <% if (plan2_subsidy && plan2_subsidy > 0) { %>
+              <span style="color: #777">was $<%= Utils.Number.rounded(plan2_gross_premium) %> </span>
+            <% } %>
+          </div>
+        <% } else if( plan2_marketing_name) { %>
+          <button class="btn-link btn add-applicants">Add Applicants</button>
+        <% } %>
       </td>    
       <td>
-        <%= plan3_gross_premium %>
+        <% if ( plan3_gross_premium ) { %>
+          <div class="aca-pricing-summary">
+            <span class="net-premium-text"> $<%= Utils.Number.rounded(plan3_net_premium) %> </span>
+            <br><span class="premium-frequency-text"> per month estimate</span>
+            <% if (plan3_subsidy && plan3_subsidy > 0) { %>
+            <span style="color: #777">was $<%= Utils.Number.rounded(plan3_gross_premium) %> </span>
+            <% } %>
+          </div>
+        <% } else if (plan3_marketing_name) { %>
+          <button class="btn-link btn add-applicants">Add Applicants</button>
+        <% } %>
+
       </td>
     </tr>
 
     <tr>
       <td>
-        Metal Level
+        <strong>Metal Level</strong>
       </td>
       <td>
-        <span class="metal-level <%= plan1_metal_level_name %>"><%= plan1_metal_level_name %></span>
+        <span class="metal-level"><%= plan1_metal_level_name %></span>
       </td>
       <td>
-        <span class="metal-level <%= plan2_metal_level_name %>"><%= plan2_metal_level_name %></span>
+        <span class="metal-level"><%= plan2_metal_level_name %></span>
       </td>
       <td>
-        <span class="metal-level <%= plan3_metal_level_name %>"><%= plan3_metal_level_name %></span>
+        <span class="metal-level"><%= plan3_metal_level_name %></span>
       </td>
     </tr>
 
@@ -58,18 +125,19 @@
       </td>
 
     </tr>
-  </table>
 
-<!--
-  <table class="table">
-    <thead>
-      <th colspan="3">Medical Costs</th>
-    </thead>
     <tr>
       <td>
         Primary Doctor Office Visit
       </td>
       <td>
+        <%= plan1_pcp_copay %>
+      </td>
+      <td>
+        <%= plan3_pcp_copay %>
+      </td>
+      <td>
+        <%= plan3_pcp_copay %>
       </td>
     </tr>
     <tr>
@@ -77,6 +145,13 @@
         Specialist Office Visit
       </td>
       <td>
+        <%= plan1_specialist_copay %>
+      </td>
+      <td>
+        <%= plan2_specialist_copay %>
+      </td>
+      <td>
+        <%= plan3_specialist_copay %>
       </td>
     </tr>
     <tr>
@@ -84,6 +159,13 @@
         Emergency Room Visit
       </td>
       <td>
+        <%= plan1_er_copay %>
+      </td>
+      <td>
+        <%= plan2_er_copay %>
+      </td>
+      <td>
+        <%= plan3_er_copay %>
       </td>
     </tr>
     <tr>
@@ -91,25 +173,28 @@
         Hospital Stay
       </td>
       <td>
+        <%= plan1_inpatient_facility %> 
+      </td>
+      <td>
+        <%= plan2_inpatient_facility %> 
+      </td>
+      <td>
+        <%= plan3_inpatient_facility %> 
       </td>
     </tr>
-    <tfoot>
-      <td colspan="3">
-        Tip:  Avoid paying higher costs!  Search the <a href="<%= plan1_network_url %>" target="_blank">Provider Directory</a> to ensure your doctors are in-network.
-      </td>
-    </tfoot>
-  </table>
 
-
-  <table class="table">
-    <thead>
-      <th colspan="3">Prescription Drug Costs</th>
-    </thead>
     <tr>
       <td>
-        Covered Generics
+        Covered Generic Drugs
       </td>
       <td>
+        <%= plan1_generic_drugs %>
+      </td>
+      <td>
+        <%= plan2_generic_drugs %>
+      </td>
+      <td>
+        <%= plan3_generic_drugs %>
       </td>
     </tr>
     <tr>
@@ -117,21 +202,64 @@
         Preferred Brand-Name Drugs
       </td>
       <td>
+        <%= plan1_pfd_brand_drugs %>
+
       </td>
+      <td>
+        <%= plan2_pfd_brand_drugs %>
+      </td>
+      <td>
+        <%= plan3_pfd_brand_drugs %>
+      </td> 
     </tr>
     <tr>
       <td>
         Non-Preferred Brand Drugs
       </td>
       <td>
+        <%= plan1_non_pfd_brand_drugs %>
+
       </td>
+      <td>
+        <%= plan2_non_pfd_brand_drugs %>
+      </td>
+      <td>
+        <%= plan3_non_pfd_brand_drugs %>
+      </td> 
     </tr>
     <tr>
       <td>
         Specialty Drugs
       </td>
       <td>
+        <%= plan1_specialty_drugs %>
+      </td>
+      <td>
+        <%= plan2_specialty_drugs %>
+      </td>
+      <td>
+        <%= plan3_specialty_drugs %>
       </td>
     </tr>
+  </tbody>
  </table> 
--->
+
+  <div class="plan-comparison-controls clearfix">
+    <div class="text-center">
+      <p>
+        <button class="page-back btn btn-primary btn-circle"><span class="glyphicon glyphicon-chevron-left"></span></button>
+        Page <span class=""><%= current_page %> of <%= total_pages %></span>
+        <button class="page-next btn btn-primary btn-circle"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      </p>
+
+      <span style="padding: 3px; background: #ffe; color: #777">We understand this stuff.  Call Us <%= formatted_phone %></span>
+    </div>
+  </div>
+</div>
+
+<% } else { %>
+
+<div class="alert alert-info">
+  <p>You haven't selected any plans to compare!</p>
+</div>
+<% } %>
