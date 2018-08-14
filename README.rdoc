@@ -1,28 +1,25 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+I built this as a hobby-project in conjunction with rollout of ACA.  
 
-Things you may want to cover:
+Primary motivations were to learn BackboneJS and better understand ACA tax-credit/subsidy calculation.
+
+Only contains PA QHP data for 2014 and 2015 (see /files).  Data is from [data.healthcare.gov QHP Landscape files](https://data.healthcare.gov).
 
 * Ruby version
+2.13
 
 * System dependencies
+Rails 4
+Postgres 9
 
 * Configuration
+Choose between 2014 and 2015 by configurings the YEAR constant in db/seeds.rb (2014 | 2015)
 
 * Database creation
+rake db:create & db:migrate
 
 * Database initialization
+rake db:seed
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Note:  not actively maintained.
